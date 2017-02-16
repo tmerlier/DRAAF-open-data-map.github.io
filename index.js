@@ -1,16 +1,14 @@
 var _regions = regions_2017;
 var selectedRegion = null;
 
-function facetsPromise() {
-  return fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets%5Bcatalog%5D=0&facets%5Bkeyword%5D=0')
-    .then(function(response) {
-      return response.json()
-    })
-    .catch(function(err) {
-      console.log(err);
-      return [];
-    })
-}
+var facetsPromise = fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets%5Bcatalog%5D=0&facets%5Bkeyword%5D=0')
+  .then(function(response) {
+    return response.json()
+  })
+  .catch(function(err) {
+    console.log(err);
+    return [];
+  });
 
 var regionsPromises = fetch('https://geo.api.gouv.fr/regions')
   .then(function(response) {
@@ -19,7 +17,7 @@ var regionsPromises = fetch('https://geo.api.gouv.fr/regions')
   .catch(function(err) {
     console.log(err);
     return [];
-  })
+  });
 
 function getPos(str) {
   var pos = str.indexOf(' ');
@@ -168,7 +166,7 @@ function resetRegionInfos() {
 
 document.getElementById('svg')
   .addEventListener('load', function() {
-    facetsPromise()
+    facetsPromise
       .then(function(response) {
         var facets = response.facets;
         var organizations = filterOrganization(facets.organization);
